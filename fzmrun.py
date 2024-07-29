@@ -26,7 +26,7 @@ def extend_to_length(files, l):
 
 model_files = {
     "34": "data/saved/r3d34_K_200ep.pth",
-    "50": "data/saved/r3d50_KM_200ep.pth",
+    "50": "data/saved/r3d50_M_200ep.pth",
     "101": "data/saved/r3d101_K_200ep.pth"
 }
 
@@ -34,7 +34,7 @@ model_files = {
 def main():
     parser = argparse.ArgumentParser(description="Run model against images")
     parser.add_argument('--input-glob',
-                        default='E:/CASIA_Gait_Dataset/DatasetB-frames-test-1280960-detect-50-new/075/nm-01/000/person-00{01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16}.png',
+                        default='E:/CASIA_Gait_Dataset/DatasetB-frames/075/nm-01/000/075-nm-01-000-0{01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16}.png',
                         help="inputs")
     parser.add_argument("--depth", default="50",
                         help="which model depth")
@@ -44,7 +44,7 @@ def main():
     model_depth = int(args.depth)
 
     model = resnet.generate_model(model_depth=model_depth,
-                                  n_classes=1039,
+                                  n_classes=339,
                                   n_input_channels=3,
                                   shortcut_type="B",
                                   conv1_t_size=7,
