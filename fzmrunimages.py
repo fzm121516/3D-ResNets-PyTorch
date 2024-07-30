@@ -38,8 +38,9 @@ def main():
     parser = argparse.ArgumentParser(description="Run model against images")
     parser.add_argument('--videos-dir', type=str, default="E:/CASIA_Gait_Dataset/DatasetB",
                         help="Directory containing videos")
+    parser.add_argument('--images-dir', type=str, default="E:/CASIA_Gait_Dataset/DatasetB-frames-test-1280960-detect-50")
     parser.add_argument("--depth", default="50", help="Which model depth")
-    parser.add_argument("--output-dir", type=str, default="./output", help="Directory to save output")
+
     args = parser.parse_args()
 
     model_files = {
@@ -94,13 +95,19 @@ def main():
         image_name, _ = os.path.splitext(video_name)
         print(i + 1, '/', num_video, image_name)
 
+        images_dir = os.path.join(
+            args.images_dir,
+            os.path.relpath(video_path, args.videos_dir).rsplit(os.sep, 1)[0]
+        )
+        image_list = sorted(glob.glob(os.path.join(images_dir, '**', '*.png'), recursive=True))
+
         parts = image_name.split('-')
+
         if len(parts) != 4:
             print(f"Unexpected filename format: {image_name}")
             continue
 
-        output_dir = os.path.join(args.output_dir, parts[0], f"{parts[1]}-{parts[2]}", parts[3])
-        frames = extract_frames(video_path, output_dir)
+        frames = image_list
 
         if len(frames) < 16:
             print(f"Not enough frames in {video_path}")
