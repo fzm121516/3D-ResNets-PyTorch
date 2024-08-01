@@ -151,7 +151,8 @@ def main():
             # Print the highest class and its confidence for this clip
             print(f"Clip: Predicted Class: {predicted_class}, Confidence: {confidence:.4f}")
 
-        total_clips += (len(frames) - 15) // 8
+        total_clips += (len(frames) - 15) // 8 + 1
+
         overall_highest_count += highest_count
 
         if highest_count:
