@@ -19,21 +19,6 @@ def real_glob(rglob):
     return files
 
 
-def extract_frames(video_path, output_dir):
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
-    vidcap = cv2.VideoCapture(video_path)
-    success, image = vidcap.read()
-    count = 0
-    while success:
-        frame_path = os.path.join(output_dir, f"frame{count:04d}.jpg")
-        cv2.imwrite(frame_path, image)
-        success, image = vidcap.read()
-        count += 1
-    return sorted(glob.glob(os.path.join(output_dir, "*.jpg")))
-
-
 allowed_gait_types = ['nm-05', 'nm-06', 'bg-01', 'bg-02', 'cl-01', 'cl-02']
 
 
@@ -140,7 +125,7 @@ def main():
         highest_count = 0
 
         # Change step from 16 to 8 for overlapping
-        for j in range(0, len(frames) - 15, 16):
+        for j in range(0, len(frames) - 15, 8):
             image_clips = frames[j:j + 16]
 
             clip = []
@@ -155,10 +140,18 @@ def main():
                 outputs = model(model_clips)
                 outputs = F.softmax(outputs, dim=1).cpu()
 
-            if torch.argmax(outputs) == 155:
+            # Get the highest confidence and its corresponding class
+            confidence, predicted_class = torch.max(outputs, 1)
+            confidence = confidence.item()
+            predicted_class = predicted_class.item()
+
+            if predicted_class == 155:
                 highest_count += 1
 
-        total_clips += (len(frames) - 15) // 16
+            # Print the highest class and its confidence for this clip
+            print(f"Clip: Predicted Class: {predicted_class}, Confidence: {confidence:.4f}")
+
+        total_clips += (len(frames) - 15) // 8
         overall_highest_count += highest_count
 
         if highest_count:
