@@ -53,7 +53,7 @@ def main():
                                   no_max_pool=False,
                                   widen_factor=1.0)
 
-    checkpoint = torch.load(model_file, map_location='cuda:0' if torch.cuda.is_available() else 'cpu')
+    checkpoint = torch.load(model_file, map_location='cuda:1' if torch.cuda.is_available() else 'cpu')
     arch = '{}-{}'.format("resnet", model_depth)
     assert arch == checkpoint['arch']
 
