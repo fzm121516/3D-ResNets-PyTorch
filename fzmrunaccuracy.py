@@ -27,7 +27,7 @@ def main():
     parser.add_argument('--videos-dir', type=str, default="/home/fanzheming/zm/mygait/datasets/CASIA-B/dataset-b3",
                         help="Directory containing videos")
     parser.add_argument('--images-dir', type=str,
-                        default="/home/fanzheming/zm/mygait/datasets/CASIA-B/dataset-b-frames-50-original-1280960")
+                        default="/home/fanzheming/zm/mygait/datasets/CASIA-B/dataset-b-frames-50-original-480960")
     parser.add_argument("--depth", default="50", help="Which model depth")
 
     args = parser.parse_args()
